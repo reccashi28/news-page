@@ -1,10 +1,15 @@
 import React from 'react'
 import styles from '../styles/eom.module.css'
+import Toolbar from '../components/toolbar'
+
+
 function eom({ employee }) {
 
     console.log(employee, "employee")
     return (
         <div className='page-container'>
+            <Toolbar />
+            
             <div className={styles.main}>
                 <h1>Employee of the Month</h1>
 
