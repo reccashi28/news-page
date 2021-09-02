@@ -5,7 +5,6 @@ import Toolbar from '../components/toolbar'
 
 function eom({ employee }) {
 
-    console.log(employee, "employee")
     return (
         <div className='page-container'>
             <Toolbar />
