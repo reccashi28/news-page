@@ -1,18 +1,46 @@
-import styles from '../../styles/Feed.module.css'
+import styles from '../../styles/Feed.module.css';
+import { useRouter } from 'next/router';
+import Toolbar from '../../components/toolbar'
 
 const Feed = ( {pageNumber, articles }) => {
 
-    console.log(pageNumber, articles)
+    const  router = useRouter();
+
     return (
-        <div className={styles.main}>
+        <div className='page-container'>
+            <Toolbar />            
+            <div className={styles.main}>
             {articles.map( (article, index) => {
-                return <div key={index} className={styles.post}>
-                           <h1>{article.title}</h1>
+                return (
+                    <div key={index} className={styles.post}>
+                           <h1 onClick={ () => window.location.href = article.url}>{article.title}</h1>
                             <p>{article.description}</p>
                             {!!article.urlToImage && <img src={article.urlToImage} />}
-                        </div>
+                    </div>
+                )
             })}
             
+            </div>
+            
+            <div className={styles.paginator}>
+                <div 
+                className={pageNumber === 1 ? styles.disabled : styles.active}
+                onClick={() => {
+                    if(pageNumber > 1 ){
+                        router.push(`/feed/${pageNumber -1 }`)
+                    }
+                }}
+                > Previous page</div>
+                <div>{pageNumber}</div>
+                <div 
+                className={pageNumber === 5 ? styles.disabled : styles.active}
+                onClick={() => {
+                    if(pageNumber < 5 ){
+                        router.push(`/feed/${pageNumber + 1 }`)
+                    }
+                }}
+                > Next page</div>
+            </div>
         </div>
     )
 }
@@ -39,11 +67,7 @@ export const getServerSideProps = async pageContext => {
     );
     
     const responseJson = await apiResponse.json();
-
-    console.log(responseJson);
-
     const { articles } = responseJson;
-
 
     return {
         props: {
